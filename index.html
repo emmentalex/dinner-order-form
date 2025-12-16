@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 400px; }
+        input, select { width: 100%; padding: 10px; margin: 10px 0; }
+        button { background: #28a745; color: white; border: none; padding: 10px; width: 100%; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>Order Form</h2>
+    <form id="orderForm">
+        <input type="text" name="Name" placeholder="Full Name" required>
+        <input type="email" name="Email" placeholder="Email Address" required>
+        <select name="Product">
+            <option value="Widget A">Widget A</option>
+            <option value="Widget B">Widget B</option>
+        </select>
+        <input type="number" name="Quantity" placeholder="Quantity" min="1" required>
+        <button type="submit" id="submitBtn">Place Order</button>
+    </form>
+
+    <p id="msg"></p>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyWuUsuOIlvACNwLcvrh3joSJ8T6a2qQYpxXe3iXGGY3YTNIWE5NxPZf4AKVtN6kCnt_A/exec';
+        const form = document.getElementById('orderForm');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            document.getElementById('submitBtn').disabled = true;
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => {
+                    document.getElementById('msg').innerHTML = "Order Sent Successfully!";
+                    form.reset();
+                    document.getElementById('submitBtn').disabled = false;
+                })
+                .catch(error => console.error('Error!', error.message));
+        });
+    </script>
+</body>
+</html>
